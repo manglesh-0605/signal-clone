@@ -8,24 +8,28 @@ const AddChatScreen = ({ navigation }) => {
 
     const [input, setInput] = useState('')
 
-    // useLayoutEffect(() => {
-    //     navigation.setOptions({
-    //         title: 'Add a new chat',
-    //         headerBackTitle: 'Chats'
+    useLayoutEffect(() => {
+        navigation.setOptions({
+            title: 'Add a new chat',
+            headerBackTitle: 'Chats'
 
-    //     })
-    // }, [navigation])
+        })
+    }, [navigation])
 
 
-    // const createChat = async () => {
-    //     await db.collection('chats').add({
-    //         chatName: input,
+    const createChat = async () => {
+        await db
+            .collection("chats")
+            .add({
+                chatName: input
 
-    //     }).then(() => {
-    //         navigation.goBack()
-    //     })
-    //         .catch(err => alert(err))
-    // }
+            })
+            .then(() => {
+                console.log('mess added')
+                navigation.goBack()
+            })
+            .catch((err) => alert(err))
+    }
 
 
     return (
@@ -34,7 +38,7 @@ const AddChatScreen = ({ navigation }) => {
                 placeholder="Enter a chat name"
                 value={input}
                 onChangeText={(text) => { setInput(text) }}
-                // onSubmitEditing={createChat}
+                onSubmitEditing={createChat}
                 leftIcon={
                     <Icon name='wechat' type={'antdesing'} size={24} color='black' />
                 } />
@@ -42,8 +46,7 @@ const AddChatScreen = ({ navigation }) => {
             <Button
                 title='create a new chat'
                 
-            onPress={()=>
-            navigation.goBack()} 
+                onPress={() => createChat()}
             />
         </View>
     )

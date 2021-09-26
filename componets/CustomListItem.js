@@ -4,7 +4,11 @@ import { ListItem, Avatar } from 'react-native-elements'
 
 const CustomListItem = ({ id, chatName, enterChat }) => {
     return (
-        <ListItem key={id} bottomDivider>
+        <ListItem
+            key={id}
+            bottomDivider
+            style={styles.list}
+            onPress={() => enterChat(id, chatName)} >
             <Avatar
                 rounded
                 source={{
@@ -27,5 +31,7 @@ const CustomListItem = ({ id, chatName, enterChat }) => {
 export default CustomListItem;
 
 const styles = StyleSheet.create({
-
+    list: {
+        paddingLeft: 5
+    }
 })

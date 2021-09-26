@@ -6,29 +6,35 @@ import CustomListItem from '../componets/CustomListItem'
 import { auth, db } from '../firebase'
 import { AntDesign } from '@expo/vector-icons';
 import { SimpleLineIcons } from '@expo/vector-icons';
+import { FlatList } from 'react-native-gesture-handler'
 
 
 const HomeScreen = ({ navigation }) => {
 
-    // const [chats, setChats] = useState([])
+    const [chats, setChats] = useState([])
 
-    // useEffect(() => {
-    //     const unsunscribe = db.collection('chats').onSnapshot(snapshot =>
-    //         setChats(
-    //             snapshot.docs.map(doc => (
-    //                 {
-    //                     id: doc.id,
-    //                     data: doc.data()
+    const enterChat = () => {
+        navigation.navigate('chat')
+    }
 
-    //                 }
-    //             )))
-    //     )
+    useEffect(() => {
+        const unsunscribe = db.collection('chats')
+            .onSnapshot((snapshot) =>
+                setChats(
+                    snapshot.docs.map((doc) => (
+                        {
+                            id: doc.id,
+                            data: doc.data()
+
+                        }
+                    ))
+                )
+            )
 
 
-    //     return unsunscribe;
-    // }, [])
+        return unsunscribe;
+    }, [])
 
-    
     const signOut = () => {
         auth.signOut().then(() => {
             navigation.replace('Login')
@@ -76,20 +82,28 @@ const HomeScreen = ({ navigation }) => {
                 </View>
             )
         })
+
+        console.log('chats are :', chats)
+
     })
     return (
-        <SafeAreaView>
-            <ScrollView>
-                {/* {
-                    chats.map(({ id, data: { chatName } }) => {
-                        <CustomListItem key={id} id={id} chatName={chatName} />
-                    })
-                } */}
-            </ScrollView>
+        <SafeAreaView style={styles.container}>
+            <FlatList
+                data={chats}
+                keyExtractor={item => item.id}
+                renderItem={
+                    ({ item }) => (
+                        <CustomListItem chatName={item.data.chatName} id={id} enterChat={enterChat} />
+                    )
+                } />
         </SafeAreaView>
     )
 }
 
 export default HomeScreen
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({
+    container: {
+        height: '100%'
+    }
+})
