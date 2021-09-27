@@ -13,8 +13,8 @@ const HomeScreen = ({ navigation }) => {
 
     const [chats, setChats] = useState([])
 
-    const enterChat = () => {
-        navigation.navigate('chat')
+    const enterChat = (id, chatName) => {
+        navigation.navigate('chat', { id, chatName })
     }
 
     useEffect(() => {
@@ -93,7 +93,7 @@ const HomeScreen = ({ navigation }) => {
                 keyExtractor={item => item.id}
                 renderItem={
                     ({ item }) => (
-                        <CustomListItem chatName={item.data.chatName} id={id} enterChat={enterChat} />
+                        <CustomListItem chatName={item.data.chatName} id={item.id} enterChat={enterChat} />
                     )
                 } />
         </SafeAreaView>
